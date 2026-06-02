@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beatriz França — Fonoaudióloga & Dev Frontend</title>
+  <meta name="description" content="Portfólio de Beatriz França, Fonoaudióloga (Msc) em transição para o Desenvolvimento Frontend." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080b14;
+      --bg2: #0d1020;
+      --surface: rgba(255,255,255,0.04);
+      --surface2: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08);
+      --violet: #8b5cf6;
+      --violet-light: #a78bfa;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --rose: #f43f5e;
+      --pink: #ec4899;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --dim: #475569;
+      --font-display: 'DM Serif Display', serif;
+      --font-body: 'Outfit', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --radius: 16px;
+      --glow-v: 0 0 40px rgba(139,92,246,0.25);
+      --glow-c: 0 0 40px rgba(6,182,212,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--violet); border-radius: 2px; }
+
+    /* ── Canvas bg ── */
+    #particle-canvas {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; opacity: 0.5;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section { position: relative; z-index: 1; padding: 100px 0; }
+    section:first-of-type { padding-top: 0; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 18px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(8,11,20,0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: all .3s;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: .02em;
+    }
+    .nav-logo span { color: var(--violet-light); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: .85rem;
+      font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-cta {
+      padding: 8px 20px; border-radius: 8px; font-size: .85rem; font-weight: 600;
+      background: linear-gradient(135deg, var(--violet), var(--blue));
+      color: #fff; text-decoration: none; transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .85; }
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--text); transition: all .3s; }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: rgba(8,11,20,0.97); backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--text); text-decoration: none; font-size: 1.5rem; font-family: var(--font-display); }
+    .mobile-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: var(--muted); font-size: 2rem; cursor: pointer; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding-top: 100px; padding-bottom: 60px;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 100px;
+      border: 1px solid rgba(139,92,246,0.3);
+      background: rgba(139,92,246,0.1);
+      font-size: .75rem; font-family: var(--font-mono);
+      color: var(--violet-light); letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-badge::before { content: '●'; font-size: .5rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1.1; margin-bottom: 20px;
+      letter-spacing: -.02em;
+    }
+    .hero-title em { font-style: italic; color: transparent;
+      background: linear-gradient(135deg, var(--violet-light), var(--cyan));
+      -webkit-background-clip: text; background-clip: text; }
+
+    .hero-subtitle {
+      font-size: 1.1rem; color: var(--muted); max-width: 480px;
+      margin-bottom: 40px; line-height: 1.7;
+    }
+
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 10px; font-weight: 600;
+      font-size: .95rem; text-decoration: none; transition: all .25s; cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--violet), var(--blue));
+      color: #fff; box-shadow: var(--glow-v);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(139,92,246,.4); }
+    .btn-ghost {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-ghost:hover { background: var(--surface2); border-color: rgba(139,92,246,0.4); }
+
+    .hero-visual {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .avatar-ring {
+      position: relative; width: 360px; height: 360px;
+    }
+    .avatar-ring::before, .avatar-ring::after {
+      content: ''; position: absolute; inset: -16px; border-radius: 50%;
+      border: 1px solid rgba(139,92,246,.2);
+      animation: spin-slow 12s linear infinite;
+    }
+    .avatar-ring::after { inset: -32px; border-color: rgba(6,182,212,.15); animation-duration: 18s; animation-direction: reverse; }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+    .avatar-img {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: linear-gradient(135deg, #1e1b4b, #0c1a2e);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 7rem; border: 2px solid rgba(139,92,246,.3);
+      box-shadow: var(--glow-v), inset 0 0 60px rgba(139,92,246,.1);
+      position: relative; overflow: hidden;
+    }
+    .avatar-img::after {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(139,92,246,.15), transparent 60%);
+    }
+    .floating-tags {
+      position: absolute; width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .tag {
+      position: absolute; padding: 6px 12px; border-radius: 8px;
+      background: var(--surface2); border: 1px solid var(--border);
+      font-size: .7rem; font-family: var(--font-mono); color: var(--cyan);
+      white-space: nowrap; animation: float 4s ease-in-out infinite;
+    }
+    .tag:nth-child(1) { top: 10%; left: -20%; animation-delay: 0s; }
+    .tag:nth-child(2) { top: 30%; right: -25%; animation-delay: 1s; }
+    .tag:nth-child(3) { bottom: 25%; left: -15%; animation-delay: 2s; }
+    .tag:nth-child(4) { bottom: 10%; right: -20%; animation-delay: .5s; color: var(--violet-light); }
+    @keyframes float {
+      0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}
+    }
+
+    .hero-scroll {
+      margin-top: 60px; display: flex; align-items: center; gap: 12px;
+      color: var(--dim); font-size: .8rem; font-family: var(--font-mono);
+      letter-spacing: .08em;
+    }
+    .scroll-line { width: 40px; height: 1px; background: var(--dim); }
+
+    /* ── SECTION HEADER ── */
+    .section-header { margin-bottom: 64px; }
+    .section-number {
+      font-family: var(--font-mono); font-size: .75rem; color: var(--violet-light);
+      letter-spacing: .15em; margin-bottom: 12px; display: block;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.15;
+    }
+    .section-title span { color: transparent;
+      background: linear-gradient(90deg, var(--violet-light), var(--cyan));
+      -webkit-background-clip: text; background-clip: text; }
+    .section-desc { color: var(--muted); max-width: 600px; margin-top: 16px; font-size: 1rem; }
+
+    /* ── GLASS CARD ── */
+    .glass {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(12px);
+    }
+    .glass-strong {
+      background: var(--surface2);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+    }
+
+    /* ── SOBRE ── */
+    .pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .pillar-card {
+      padding: 32px 28px;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .pillar-card:hover { transform: translateY(-4px); box-shadow: var(--glow-v); }
+    .pillar-icon { font-size: 2rem; margin-bottom: 16px; }
+    .pillar-title { font-weight: 700; margin-bottom: 8px; font-size: 1.05rem; }
+    .pillar-text { color: var(--muted); font-size: .9rem; line-height: 1.65; }
+
+    .about-highlight {
+      margin-top: 48px; padding: 40px; border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(139,92,246,.08), rgba(6,182,212,.06));
+      border: 1px solid rgba(139,92,246,.2);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    }
+    .about-quote {
+      font-family: var(--font-display); font-style: italic;
+      font-size: 1.4rem; line-height: 1.5; color: var(--text);
+    }
+    .about-quote::before { content: '"'; color: var(--violet-light); font-size: 2rem; line-height: 0; vertical-align: -.4rem; margin-right: 4px; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .stat { text-align: center; }
+    .stat-num { font-family: var(--font-display); font-size: 2.5rem; color: var(--violet-light); display: block; }
+    .stat-label { font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+
+    /* ── TRAJETÓRIA ── */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 8px; bottom: 8px;
+      width: 1px; background: linear-gradient(to bottom, var(--violet), var(--cyan), transparent);
+    }
+    .timeline-item { position: relative; margin-bottom: 48px; }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot {
+      position: absolute; left: -38px; top: 6px; width: 12px; height: 12px;
+      border-radius: 50%; background: var(--violet);
+      box-shadow: 0 0 16px rgba(139,92,246,.6);
+      border: 2px solid var(--bg);
+    }
+    .timeline-dot.cyan { background: var(--cyan); box-shadow: 0 0 16px rgba(6,182,212,.6); }
+    .timeline-meta {
+      font-family: var(--font-mono); font-size: .75rem; color: var(--muted);
+      letter-spacing: .08em; margin-bottom: 8px;
+    }
+    .timeline-role { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
+    .timeline-place { color: var(--violet-light); font-size: .9rem; margin-bottom: 10px; }
+    .timeline-desc { color: var(--muted); font-size: .9rem; line-height: 1.65; }
+
+    /* ── HABILIDADES ── */
+    .skills-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .skills-group-title {
+      font-size: .75rem; font-family: var(--font-mono);
+      color: var(--cyan); letter-spacing: .12em; text-transform: uppercase;
+      margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+    }
+    .skills-group-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .skill-bar { margin-bottom: 18px; }
+    .skill-bar-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: .85rem; font-weight: 500; }
+    .skill-bar-label span:last-child { color: var(--muted); font-family: var(--font-mono); font-size: .75rem; }
+    .skill-track { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+    .skill-fill {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--violet), var(--cyan));
+      transform-origin: left; animation: fillBar 1.2s ease forwards;
+      transform: scaleX(0);
+    }
+    @keyframes fillBar { to { transform: scaleX(1); } }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .skill-tag {
+      padding: 4px 12px; border-radius: 6px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: .75rem; font-family: var(--font-mono); color: var(--muted);
+    }
+
+    /* ── STACK ── */
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+    .stack-item {
+      padding: 24px 16px; text-align: center;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+      cursor: default;
+    }
+    .stack-item:hover { transform: translateY(-6px); border-color: rgba(139,92,246,.4); box-shadow: var(--glow-v); }
+    .stack-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+    .stack-name { font-size: .8rem; font-weight: 600; margin-bottom: 4px; }
+    .stack-type { font-size: .7rem; color: var(--muted); font-family: var(--font-mono); }
+
+    /* ── PESQUISA ── */
+    .research-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .research-card { padding: 32px; transition: transform .3s; }
+    .research-card:hover { transform: translateY(-4px); }
+    .research-accent {
+      width: 36px; height: 3px; border-radius: 2px; margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--violet), var(--cyan));
+    }
+    .research-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 10px; line-height: 1.4; }
+    .research-meta { font-family: var(--font-mono); font-size: .75rem; color: var(--violet-light); margin-bottom: 12px; }
+    .research-desc { color: var(--muted); font-size: .88rem; line-height: 1.65; }
+
+    /* ── PROJETOS ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .project-card { padding: 0; overflow: hidden; transition: transform .3s; }
+    .project-card:hover { transform: translateY(-4px); }
+    .project-thumb {
+      height: 180px; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+    }
+    .project-thumb.v1 { background: linear-gradient(135deg, #1e1b4b, #0f172a); }
+    .project-thumb.v2 { background: linear-gradient(135deg, #0c1a2e, #0f2744); }
+    .project-thumb.v3 { background: linear-gradient(135deg, #1a0a2e, #160d3a); }
+    .project-thumb.v4 { background: linear-gradient(135deg, #0a1a1e, #0a2a2e); }
+    .project-body { padding: 24px; }
+    .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .project-tag {
+      padding: 2px 10px; border-radius: 4px; font-size: .7rem; font-family: var(--font-mono);
+      background: rgba(139,92,246,.12); border: 1px solid rgba(139,92,246,.25); color: var(--violet-light);
+    }
+    .project-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+    .project-desc { color: var(--muted); font-size: .85rem; line-height: 1.6; }
+    .project-status {
+      margin-top: 12px; display: inline-flex; align-items: center; gap: 6px;
+      font-size: .72rem; font-family: var(--font-mono); color: var(--cyan);
+    }
+    .project-status::before { content: '▸'; }
+
+    /* ── CURIOSIDADES ── */
+    .fun-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .fun-card {
+      padding: 28px; text-align: center;
+      transition: transform .3s;
+    }
+    .fun-card:hover { transform: translateY(-4px); }
+    .fun-emoji { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+    .fun-title { font-weight: 700; margin-bottom: 8px; font-size: .95rem; }
+    .fun-text { color: var(--muted); font-size: .85rem; line-height: 1.6; }
+
+    /* ── CONTATO ── */
+    .contact-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+    }
+    .contact-headline {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.2; margin-bottom: 20px;
+    }
+    .contact-text { color: var(--muted); line-height: 1.7; margin-bottom: 32px; }
+    .contact-links { display: flex; flex-direction: column; gap: 14px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 14px; padding: 16px 20px;
+      border-radius: 12px; background: var(--surface); border: 1px solid var(--border);
+      text-decoration: none; color: var(--text); transition: all .2s;
+    }
+    .contact-link:hover { border-color: rgba(139,92,246,.4); background: var(--surface2); transform: translateX(4px); }
+    .contact-link-icon { font-size: 1.3rem; }
+    .contact-link-label { font-size: .75rem; color: var(--muted); font-family: var(--font-mono); }
+    .contact-link-value { font-weight: 600; font-size: .9rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label { font-size: .8rem; font-family: var(--font-mono); color: var(--muted); letter-spacing: .08em; }
+    .form-input, .form-textarea {
+      padding: 12px 16px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); font-family: var(--font-body); font-size: .95rem;
+      outline: none; transition: border-color .2s;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: rgba(139,92,246,.5); }
+    .form-textarea { resize: vertical; min-height: 120px; }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--dim); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      padding: 40px 0; border-top: 1px solid var(--border);
+      text-align: center; color: var(--dim); font-size: .85rem;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer span { color: var(--rose); }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-toggle { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { order: -1; }
+      .avatar-ring { width: 260px; height: 260px; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .about-highlight { grid-template-columns: 1fr; gap: 24px; }
+      .skills-container { grid-template-columns: 1fr; }
+      .research-grid, .projects-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+      .fun-grid { grid-template-columns: 1fr 1fr; }
+      .stack-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+    }
+    @media (max-width: 500px) {
+      .hero-title { font-size: 2.4rem; }
+      .fun-grid { grid-template-columns: 1fr; }
+      section { padding: 72px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Bea<span>.</span>França</a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#trajetoria">Trajetória</a></li>
+    <li><a href="#skills">Habilidades</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#pesquisa">Pesquisa</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="mailto:fono.beatrizfranca@gmail.com" class="nav-cta">✉ Contato</a>
+  <div class="nav-toggle" id="navToggle">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#sobre" onclick="closeMobile()">Sobre</a>
+  <a href="#trajetoria" onclick="closeMobile()">Trajetória</a>
+  <a href="#skills" onclick="closeMobile()">Habilidades</a>
+  <a href="#stack" onclick="closeMobile()">Stack</a>
+  <a href="#pesquisa" onclick="closeMobile()">Pesquisa</a>
+  <a href="#projetos" onclick="closeMobile()">Projetos</a>
+  <a href="#curiosidades" onclick="closeMobile()">Curiosidades</a>
+  <a href="#contato" onclick="closeMobile()">Contato</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">🟣 Disponível para oportunidades</div>
+        <h1 class="hero-title">
+          Ciência da fala <br/>encontra <em>código.</em>
+        </h1>
+        <p class="hero-subtitle">
+          Fonoaudióloga Msc em transição para o Frontend. Combino rigor científico, escuta clínica e amor pela tecnologia para criar experiências digitais com propósito humano.
+        </p>
+        <div class="hero-actions">
+          <a href="#projetos" class="btn btn-primary">Ver projetos ↓</a>
+          <a href="#contato" class="btn btn-ghost">Entre em contato</a>
+        </div>
+        <div class="hero-scroll">
+          <div class="scroll-line"></div>
+          scroll para explorar
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="avatar-ring">
+          <div class="avatar-img">🎙</div>
+          <div class="floating-tags">
+            <div class="tag">React 19</div>
+            <div class="tag">TypeScript</div>
+            <div class="tag">Fonoaudióloga</div>
+            <div class="tag">MSc. UECE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-number">// 01</span>
+      <h2 class="section-title">Sobre <span>mim</span></h2>
+      <p class="section-desc">Três pilares que definem minha trajetória única na intersecção entre saúde e tecnologia.</p>
+    </div>
+    <div class="pillars-grid fade-in">
+      <div class="glass pillar-card">
+        <div class="pillar-icon">🎓</div>
+        <div class="pillar-title">Cientista</div>
+        <p class="pillar-text">Mestre em Ciências da Saúde pela UECE com foco em linguagem e comunicação. Pesquisa com impacto real em avaliação fonoaudiológica e deglutição.</p>
+      </div>
+      <div class="glass pillar-card">
+        <div class="pillar-icon">💻</div>
+        <div class="pillar-title">Desenvolvedora</div>
+        <p class="pillar-text">Em transição apaixonada para o Frontend. Aprendendo React, TypeScript e design de interfaces com a mesma dedicação que apliquei às ciências da saúde.</p>
+      </div>
+      <div class="glass pillar-card">
+        <div class="pillar-icon">🩺</div>
+        <div class="pillar-title">Clínica</div>
+        <p class="pillar-text">Anos de prática fonoaudiológica me ensinaram a ouvir, observar padrões e resolver problemas com empatia — habilidades que levo para o desenvolvimento.</p>
+      </div>
+    </div>
+    <div class="about-highlight fade-in">
+      <div class="about-quote">
+        Da deglutição ao deploy — cada transição me fez uma profissional mais completa e mais humana.
+      </div>
+      <div class="about-stats">
+        <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Anos de clínica</span></div>
+        <div class="stat"><span class="stat-num">MSc</span><span class="stat-label">Ciências da Saúde</span></div>
+        <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Publicações</span></div>
+        <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Curiosidade</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAJETÓRIA -->
+<section id="trajetoria">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-number">// 02</span>
+      <h2 class="section-title"><span>Trajetória</span></h2>
+      <p class="section-desc">Uma jornada não-linear que conecta ciência, clínica e código.</p>
+    </div>
+    <div class="timeline fade-in">
+      <div class="timeline-item">
+        <div class="timeline-dot cyan"></div>
+        <div class="timeline-meta">2024 — presente</div>
+        <div class="timeline-role">Desenvolvimento Frontend</div>
+        <div class="timeline-place">Transição de carreira — autodidática</div>
+        <p class="timeline-desc">Mergulho intenso em React, TypeScript, TailwindCSS, TanStack Router e design de sistemas. Construindo projetos reais para solidificar o aprendizado.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">2021 — 2023</div>
+        <div class="timeline-role">Mestrado em Ciências da Saúde</div>
+        <div class="timeline-place">UECE — Universidade Estadual do Ceará</div>
+        <p class="timeline-desc">Pesquisa em linguagem, comunicação e avaliação fonoaudiológica. Metodologia científica, análise estatística e produção acadêmica.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-meta">2018 — 2022</div>
+        <div class="timeline-role">Fonoaudióloga Clínica</div>
+        <div class="timeline-place">Atendimento hospitalar e ambulatorial</div>
+        <p class="timeline-desc">Atuação em disfagia, linguagem e comunicação. Desenvolvimento de protocolos de avaliação e elaboração de relatórios técnicos detalhados.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot cyan"></div>
+        <div class="timeline-meta">2014 — 2018</div>
+        <div class="timeline-role">Graduação em Fonoaudiologia</div>
+        <div class="timeline-place">Universidade — Ceará</div>
+        <p class="timeline-desc">Formação sólida em anatomia, neurologia, linguagem e comunicação humana. Base científica que orienta tudo o que construo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HABILIDADES -->
+<section id="skills">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-number">// 03</span>
+      <h2 class="section-title">Habilidades <span>&</span> Competências</h2>
+      <p class="section-desc">Competências técnicas e interpessoais construídas em dois mundos diferentes.</p>
+    </div>
+    <div class="skills-container fade-in">
+      <div>
+        <div class="skills-group-title">Frontend & Dev</div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>HTML & CSS</span><span>90%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:90%"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>JavaScript / TypeScript</span><span>70%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:70%"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>React 19</span><span>65%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:65%"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>TailwindCSS</span><span>75%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:75%"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>Git & GitHub</span><span>60%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:60%"></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="skills-group-title">Saúde & Pesquisa</div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>Avaliação Fonoaudiológica</span><span>95%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:95%"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>Metodologia Científica</span><span>90%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:90%"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>Disfagia & Deglutição</span><span>88%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:88%"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-label"><span>Análise Estatística</span><span>80%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:80%"></div></div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Comunicação</span>
+          <span class="skill-tag">Escuta ativa</span>
+          <span class="skill-tag">Problem solving</span>
+          <span class="skill-tag">Documentação</span>
+          <span class="skill-tag">Empatia</span>
+          <span class="skill-tag">Pensamento crítico</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-number">// 04</span>
+      <h2 class="section-title">Meu <span>Stack</span></h2>
+      <p class="section-desc">Ferramentas e tecnologias que uso no dia a dia para construir.</p>
+    </div>
+    <div class="stack-grid fade-in">
+      <div class="glass stack-item"><span class="stack-icon">⚛️</span><div class="stack-name">React 19</div><div class="stack-type">UI Library</div></div>
+      <div class="glass stack-item"><span class="stack-icon">🔷</span><div class="stack-name">TypeScript</div><div class="stack-type">Language</div></div>
+      <div class="glass stack-item"><span class="stack-icon">🎨</span><div class="stack-name">Tailwind</div><div class="stack-type">Styling</div></div>
+      <div class="glass stack-item"><span class="stack-icon">🚀</span><div class="stack-name">Vite</div><div class="stack-type">Build Tool</div></div>
+      <div class="glass stack-item"><span class="stack-icon">🔀</span><div class="stack-name">TanStack</div><div class="stack-type">Router + Query</div></div>
+      <div class="glass stack-item"><span class="stack-icon">✨</span><div class="stack-name">Framer</div><div class="stack-type">Animations</div></div>
+      <div class="glass stack-item"><span class="stack-icon">🐙</span><div class="stack-name">GitHub</div><div class="stack-type">Version Control</div></div>
+      <div class="glass stack-item"><span class="stack-icon">🧩</span><div class="stack-name">shadcn/ui</div><div class="stack-type">Components</div></div>
+      <div class="glass stack-item"><span class="stack-icon">📊</span><div class="stack-name">Recharts</div><div class="stack-type">Data Viz</div></div>
+      <div class="glass stack-item"><span class="stack-icon">🦋</span><div class="stack-name">Lucide</div><div class="stack-type">Icons</div></div>
+      <div class="glass stack-item"><span class="stack-icon">📋</span><div class="stack-name">Zod</div><div class="stack-type">Validation</div></div>
+      <div class="glass stack-item"><span class="stack-icon">🍞</span><div class="stack-name">Bun</div><div class="stack-type">Runtime</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PESQUISA -->
+<section id="pesquisa">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-number">// 05</span>
+      <h2 class="section-title">Impacto <span>Acadêmico</span></h2>
+      <p class="section-desc">Pesquisa científica que contribuiu para a fonoaudiologia e ciências da saúde.</p>
+    </div>
+    <div class="research-grid fade-in">
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <div class="research-title">Avaliação Clínica da Deglutição em Pacientes Pós-AVC</div>
+        <div class="research-meta">Mestrado · UECE · 2023</div>
+        <p class="research-desc">Estudo sobre protocolos de avaliação fonoaudiológica para disfagia em contexto hospitalar, com análise de indicadores de segurança alimentar e eficiência da deglutição.</p>
+      </div>
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <div class="research-title">Comunicação Funcional e Qualidade de Vida</div>
+        <div class="research-meta">Artigo · Periódico Nacional · 2022</div>
+        <p class="research-desc">Análise dos impactos de intervenções fonoaudiológicas nos escores de qualidade de vida de adultos com alterações de linguagem adquirida.</p>
+      </div>
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <div class="research-title">Rastreamento de Disfagia em Ambiente Hospitalar</div>
+        <div class="research-meta">Capítulo de livro · 2022</div>
+        <p class="research-desc">Desenvolvimento e validação de protocolo de triagem para identificação precoce de risco de disfagia em unidades de terapia intensiva.</p>
+      </div>
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <div class="research-title">Intersecção Tecnologia e Saúde Fonoaudiológica</div>
+        <div class="research-meta">Trabalho em andamento · 2024</div>
+        <p class="research-desc">Exploração de interfaces digitais para suporte à prática fonoaudiológica: acessibilidade, teleatendimento e ferramentas de avaliação remota.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section id="projetos">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-number">// 06</span>
+      <h2 class="section-title">O que estou <span>construindo</span></h2>
+      <p class="section-desc">Projetos reais que misturam minha experiência em saúde com desenvolvimento frontend.</p>
+    </div>
+    <div class="projects-grid fade-in">
+      <div class="glass project-card">
+        <div class="project-thumb v1">🗣️</div>
+        <div class="project-body">
+          <div class="project-tags"><span class="project-tag">React</span><span class="project-tag">TypeScript</span><span class="project-tag">Saúde</span></div>
+          <div class="project-title">FonoApp — Plataforma de Avaliação</div>
+          <p class="project-desc">Ferramenta digital para aplicação de protocolos de avaliação fonoaudiológica com registro e visualização de dados do paciente.</p>
+          <div class="project-status">Em desenvolvimento</div>
+        </div>
+      </div>
+      <div class="glass project-card">
+        <div class="project-thumb v2">💊</div>
+        <div class="project-body">
+          <div class="project-tags"><span class="project-tag">TailwindCSS</span><span class="project-tag">Recharts</span><span class="project-tag">Dashboard</span></div>
+          <div class="project-title">Dashboard de Acompanhamento Clínico</div>
+          <p class="project-desc">Interface de visualização da evolução terapêutica de pacientes, com gráficos de progresso e alertas de reavaliação.</p>
+          <div class="project-status">Protótipo</div>
+        </div>
+      </div>
+      <div class="glass project-card">
+        <div class="project-thumb v3">🎧</div>
+        <div class="project-body">
+          <div class="project-tags"><span class="project-tag">Next.js</span><span class="project-tag">A11y</span><span class="project-tag">UX</span></div>
+          <div class="project-title">Site Acessível para Deficientes Auditivos</div>
+          <p class="project-desc">Estudo de caso de interface com alto contraste, suporte a Libras e adaptações para usuários com deficiência auditiva ou vocal.</p>
+          <div class="project-status">Pesquisa + design</div>
+        </div>
+      </div>
+      <div class="glass project-card">
+        <div class="project-thumb v4">🌐</div>
+        <div class="project-body">
+          <div class="project-tags"><span class="project-tag">React</span><span class="project-tag">Framer Motion</span><span class="project-tag">TanStack</span></div>
+          <div class="project-title">Este Portfólio ✨</div>
+          <p class="project-desc">O próprio portfólio como projeto: construído com as tecnologias que estou aprendendo, animações fluidas e design system próprio.</p>
+          <div class="project-status">Você está aqui</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURIOSIDADES -->
+<section id="curiosidades">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-number">// 07</span>
+      <h2 class="section-title"><span>Curiosidades</span> sobre mim</h2>
+    </div>
+    <div class="fun-grid fade-in">
+      <div class="glass fun-card">
+        <span class="fun-emoji">🎵</span>
+        <div class="fun-title">Musica faz parte da vida</div>
+        <p class="fun-text">A relação entre música, ritmo e comunicação é uma das conexões mais fascinantes que exploro — tanto clinicamente quanto no dia a dia.</p>
+      </div>
+      <div class="glass fun-card">
+        <span class="fun-emoji">☕</span>
+        <div class="fun-title">Café + código = magia</div>
+        <p class="fun-text">Todo bom projeto começa com um bom café. Fortaleza tem os melhores cafés do Ceará, e eu testo todos enquanto estudo.</p>
+      </div>
+      <div class="glass fun-card">
+        <span class="fun-emoji">📚</span>
+        <div class="fun-title">Eterna estudante</div>
+        <p class="fun-text">Passei anos em biblioteca de faculdade de medicina. Agora passo o mesmo tempo em docs de frameworks. A vibe é a mesma.</p>
+      </div>
+      <div class="glass fun-card">
+        <span class="fun-emoji">🌊</span>
+        <div class="fun-title">Filha do Nordeste</div>
+        <p class="fun-text">Fortaleza no sangue. A imensidão do mar cearense me inspira a pensar em larga escala — seja em pesquisa ou em interfaces.</p>
+      </div>
+      <div class="glass fun-card">
+        <span class="fun-emoji">🧩</span>
+        <div class="fun-title">Pensamento sistêmico</div>
+        <p class="fun-text">Fonoaudiologia ensina a ver o ser humano como um todo. No código, isso virou amor por arquitetura e componentes bem pensados.</p>
+      </div>
+      <div class="glass fun-card">
+        <span class="fun-emoji">🌱</span>
+        <div class="fun-title">Em transição com orgulho</div>
+        <p class="fun-text">Mudar de carreira não é recomeçar do zero — é somar. Cada dia que codifico trago décadas de contexto único que poucos devs têm.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-number">// 08</span>
+      <h2 class="section-title">Vamos <span>conversar?</span></h2>
+    </div>
+    <div class="contact-inner fade-in">
+      <div>
+        <h3 class="contact-headline">Aberta a oportunidades, colaborações e boas conversas.</h3>
+        <p class="contact-text">Se você tem um projeto interessante, quer trocar ideias sobre tech + saúde, ou só quer tomar um café virtual — adoraria falar com você.</p>
+        <div class="contact-links">
+          <a href="mailto:fono.beatrizfranca@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉️</span>
+            <div>
+              <div class="contact-link-label">EMAIL</div>
+              <div class="contact-link-value">fono.beatrizfranca@gmail.com</div>
+            </div>
+          </a>
+          <a href="https://linkedin.com/in/beatrizfranca" target="_blank" rel="noopener" class="contact-link">
+            <span class="contact-link-icon">💼</span>
+            <div>
+              <div class="contact-link-label">LINKEDIN</div>
+              <div class="contact-link-value">/in/beatrizfranca</div>
+            </div>
+          </a>
+          <a href="https://github.com/beatrizfranca" target="_blank" rel="noopener" class="contact-link">
+            <span class="contact-link-icon">🐙</span>
+            <div>
+              <div class="contact-link-label">GITHUB</div>
+              <div class="contact-link-value">github.com/beatrizfranca</div>
+            </div>
+          </a>
+          <a href="#" class="contact-link">
+            <span class="contact-link-icon">📍</span>
+            <div>
+              <div class="contact-link-label">LOCALIZAÇÃO</div>
+              <div class="contact-link-value">Fortaleza, Ceará — Brasil</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="contact-form glass" style="padding:32px;border-radius:var(--radius)">
+          <div class="form-group">
+            <label class="form-label">NOME</label>
+            <input class="form-input" type="text" placeholder="Seu nome" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">EMAIL</label>
+            <input class="form-input" type="email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ASSUNTO</label>
+            <input class="form-input" type="text" placeholder="Sobre o que você quer falar?" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">MENSAGEM</label>
+            <textarea class="form-textarea" placeholder="Conta mais..."></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" onclick="handleSubmit(event)">
+            Enviar mensagem ✉
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>Feito com <span>♥</span> por <strong>Beatriz França</strong> · Fortaleza, CE &nbsp;·&nbsp; <a href="mailto:fono.beatrizfranca@gmail.com">fono.beatrizfranca@gmail.com</a></p>
+    <p style="margin-top:8px;font-size:.75rem">Da deglutição ao deploy, um componente de cada vez.</p>
+  </div>
+</footer>
+
+<script>
+// ── Particle Canvas ──
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let W, H;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 1.5 + 0.3;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.color = Math.random() > 0.6 ? '#8b5cf6' : Math.random() > 0.5 ? '#06b6d4' : '#3b82f6';
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.alpha;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 100) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = '#8b5cf6';
+        ctx.globalAlpha = (1 - d/100) * 0.08;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawConnections();
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ── Fade in on scroll ──
+const faders = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+faders.forEach(f => observer.observe(f));
+
+// ── Skill bar animation ──
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-fill').forEach(bar => {
+        bar.style.animation = 'none';
+        bar.offsetHeight;
+        bar.style.animation = 'fillBar 1.2s ease forwards';
+      });
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.skills-container').forEach(s => skillObserver.observe(s));
+
+// ── Mobile menu ──
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('open');
+});
+document.getElementById('mobileClose').addEventListener('click', closeMobile);
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// ── Nav scroll ──
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  nav.style.background = window.scrollY > 50
+    ? 'rgba(8,11,20,0.95)'
+    : 'rgba(8,11,20,0.8)';
+});
+
+// ── Contact form ──
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target;
+  btn.textContent = '✅ Mensagem enviada!';
+  btn.style.background = 'linear-gradient(135deg, #10b981, #06b6d4)';
+  setTimeout(() => {
+    btn.textContent = 'Enviar mensagem ✉';
+    btn.style.background = '';
+  }, 3000);
+}
+
+// ── Typing effect for hero ──
+const typed = document.querySelector('.hero-title');
+</script>
+</body>
+</html>
