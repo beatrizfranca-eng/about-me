@@ -298,181 +298,148 @@
 
     /* ── PESQUISA ── */
     /* GRID */
-.research-grid {
+.projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 28px;
-  margin-top: 48px;
 }
 
-/* CARD */
-.research-card {
+.project-card {
   position: relative;
-  padding: 32px;
   border-radius: 28px;
   overflow: hidden;
-
   display: flex;
   flex-direction: column;
-
-  min-height: 280px;
-
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
-
   backdrop-filter: blur(16px);
-
-  transition:
-    transform .35s ease,
-    border-color .35s ease,
-    box-shadow .35s ease;
+  transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+  cursor: pointer;
 }
 
-/* EFEITO DE BRILHO */
-.research-card::before {
+.project-card::before {
   content: "";
   position: absolute;
   inset: 0;
-
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(124, 58, 237, 0.10),
-      transparent 45%
-    );
-
+  background: radial-gradient(circle at top right, rgba(124,58,237,0.14), transparent 50%);
   opacity: 0;
   transition: opacity .35s ease;
   pointer-events: none;
+  z-index: 0;
 }
 
-/* HOVER */
-.research-card:hover {
+.project-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(124, 58, 237, 0.25);
-
-  box-shadow:
-    0 15px 40px rgba(0,0,0,.22);
+  border-color: rgba(124,58,237,0.35);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,58,237,0.12);
 }
 
-.research-card:hover::before {
-  opacity: 1;
+.project-card:hover::before { opacity: 1; }
+
+.project-thumb {
+  position: relative;
+  z-index: 1;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  background: rgba(124,58,237,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: background .35s ease;
 }
 
-/* BARRA DECORATIVA */
-.research-accent {
-  width: 56px;
-  height: 4px;
+.project-card:hover .project-thumb { background: rgba(124,58,237,0.13); }
+
+.project-thumb .thumb-emoji {
+  display: block;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+
+.project-card:hover .thumb-emoji { transform: scale(1.18) rotate(-4deg); }
+
+.project-body {
+  position: relative;
+  z-index: 1;
+  padding: 24px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.project-accent {
+  width: 48px;
+  height: 3px;
   border-radius: 999px;
-  margin-bottom: 22px;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--violet),
-      var(--cyan)
-    );
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, var(--violet), var(--cyan));
 }
 
-/* TÍTULO */
-.research-title {
-  font-size: 1.15rem;
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.project-tag {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .05em;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(124,58,237,0.35);
+  color: var(--violet-light);
+  background: rgba(124,58,237,0.08);
+  transition: background .25s, border-color .25s;
+}
+
+.project-card:hover .project-tag {
+  background: rgba(124,58,237,0.16);
+  border-color: rgba(124,58,237,0.5);
+}
+
+.project-title {
+  font-size: 1.1rem;
   font-weight: 700;
-  line-height: 1.5;
-
-  margin-bottom: 14px;
-
+  line-height: 1.45;
+  margin-bottom: 10px;
   color: var(--text);
 }
 
-/* META */
-.research-meta {
+.project-desc {
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.75;
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.project-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--font-mono);
   font-size: .78rem;
   letter-spacing: .04em;
-  color: var(--violet-light);
-
-  margin-bottom: 18px;
+  color: var(--cyan);
 }
 
-/* DESCRIÇÃO */
-.research-desc {
-  color: var(--muted);
-  font-size: .92rem;
-  line-height: 1.75;
-
-  margin-top: auto;
+.project-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
-/* RESPONSIVO */
-@media (max-width: 900px) {
-  .research-grid {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .research-card {
-    min-height: auto;
-    padding: 28px;
-  }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.75); }
 }
-
-    /* ── PROJETOS ── */
-    /* GRID */
-<div class="projects-grid">
-
-  <!-- Projeto 1 -->
-  <div class="glass project-card">
-    <div class="project-thumb v1">♿</div>
-
-    <div class="project-body">
-      <div class="project-tags">
-        <span class="project-tag">HTML</span>
-        <span class="project-tag">CSS</span>
-        <span class="project-tag">JavaScript</span>
-      </div>
-
-      <h3 class="project-title">
-        Plataforma acessível
-      </h3>
-
-      <p class="project-desc">
-        Plataforma desenvolvida com foco em acessibilidade, usabilidade e inclusão digital.
-      </p>
-
-      <div class="project-status">
-        Em desenvolvimento
-      </div>
-    </div>
-  </div>
-
-  <!-- Projeto 2 (fica ao lado) -->
-  <div class="glass project-card">
-    <div class="project-thumb v2">⚙️</div>
-
-    <div class="project-body">
-      <div class="project-tags">
-        <span class="project-tag">Python</span>
-        <span class="project-tag">Automação</span>
-        <span class="project-tag">JavaScript</span>
-      </div>
-
-      <h3 class="project-title">
-        Automação de classificação
-      </h3>
-
-      <p class="project-desc">
-        Sistema automatizado para cálculo de score e classificação automática de instrumentos avaliativos.
-      </p>
-
-      <div class="project-status">
-        Em desenvolvimento
-      </div>
-    </div>
-  </div>
-
-</div>
-
+  
     /* ── CURIOSIDADES ── */
     .fun-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .fun-card {
@@ -1186,6 +1153,8 @@ window.addEventListener('scroll', () => {
     ? 'rgba(8,11,20,0.95)'
     : 'rgba(8,11,20,0.8)';
 });
+
+  
 
 // ── Contact form ──
 function handleSubmit(e) {
