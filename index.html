@@ -439,6 +439,27 @@
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.45; transform: scale(0.75); }
 }
+
+    .projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+  align-items: stretch; /* ← adicionar */
+}
+
+.project-card {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* ← adicionar */
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
+  transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+  cursor: pointer;
+}
   
     /* ── CURIOSIDADES ── */
     .fun-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
