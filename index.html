@@ -323,16 +323,125 @@
     .stack-type { font-size: .7rem; color: var(--muted); font-family: var(--font-mono); }
 
     /* ── PESQUISA ── */
-    .research-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .research-card { padding: 32px; transition: transform .3s; }
-    .research-card:hover { transform: translateY(-4px); }
-    .research-accent {
-      width: 36px; height: 3px; border-radius: 2px; margin-bottom: 20px;
-      background: linear-gradient(90deg, var(--violet), var(--cyan));
-    }
-    .research-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 10px; line-height: 1.4; }
-    .research-meta { font-family: var(--font-mono); font-size: .75rem; color: var(--violet-light); margin-bottom: 12px; }
-    .research-desc { color: var(--muted); font-size: .88rem; line-height: 1.65; }
+    /* GRID */
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 28px;
+  margin-top: 48px;
+}
+
+/* CARD */
+.research-card {
+  position: relative;
+  padding: 32px;
+  border-radius: 28px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 280px;
+
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(16px);
+
+  transition:
+    transform .35s ease,
+    border-color .35s ease,
+    box-shadow .35s ease;
+}
+
+/* EFEITO DE BRILHO */
+.research-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, 0.10),
+      transparent 45%
+    );
+
+  opacity: 0;
+  transition: opacity .35s ease;
+  pointer-events: none;
+}
+
+/* HOVER */
+.research-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(124, 58, 237, 0.25);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.22);
+}
+
+.research-card:hover::before {
+  opacity: 1;
+}
+
+/* BARRA DECORATIVA */
+.research-accent {
+  width: 56px;
+  height: 4px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--violet),
+      var(--cyan)
+    );
+}
+
+/* TÍTULO */
+.research-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.5;
+
+  margin-bottom: 14px;
+
+  color: var(--text);
+}
+
+/* META */
+.research-meta {
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  letter-spacing: .04em;
+  color: var(--violet-light);
+
+  margin-bottom: 18px;
+}
+
+/* DESCRIÇÃO */
+.research-desc {
+  color: var(--muted);
+  font-size: .92rem;
+  line-height: 1.75;
+
+  margin-top: auto;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .research-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .research-card {
+    min-height: auto;
+    padding: 28px;
+  }
+}
 
     /* ── PROJETOS ── */
     .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
@@ -674,57 +783,124 @@
 <!-- PESQUISA -->
 <section id="pesquisa">
   <div class="container">
+    
     <div class="section-header fade-in">
       <span class="section-number">// 05</span>
-      <h2 class="section-title">Impacto <span>Acadêmico</span></h2>
-      <p class="section-desc">Ciência baseada em evidências - Autoria e coautoria em trabalhos científicos (para encontrar mais acesse meu CL)</p>
+
+      <h2 class="section-title">
+        Impacto <span>Acadêmico</span>
+      </h2>
+
+      <p class="section-desc">
+        Ciência baseada em evidências — autoria e coautoria em trabalhos científicos
+        (para encontrar mais, acesse meu CL).
+      </p>
     </div>
+
     <div class="research-grid fade-in">
-      <div class="glass research-card">
-        <div class="research-accent"></div>
-        <div class="research-title">Gamificação digital & Aprendizagem</div>
-        <div class="research-meta">Graduação · UFRN · 2022</div>
-        <p class="research-desc">Aprender Pesquisando? A Gamificação como Estratégia de Ensino-Aprendizagem no Ensino Superior (pesquisa disponível no CL).</p>
-      <div class="glass research-card">
-        <div class="research-accent"></div>
-        <div class="research-title">Revisão de instrumentos</div>
-        <div class="research-meta">Trabalho · Congresso · 2020</div>
-        <p class="research-desc">Instrumentos de triagem em consciência fonológica em escolares: revisão sistemática da literatura.</p>
-      </div>
-      <div class="glass research-card">
-        <div class="research-accent"></div>
-        <div class="research-title">O estudo dos métodos criativos e colaborativos no processo de ensino-aprendizagem</div>
-        <div class="research-meta">Trabalho · Encontro Monitoria · 2021</div>
-        <p class="research-desc">Métodos criativos e colaborativos de aprendizagem no ensino da linguagem escrita no curso de Fonoaudiologia: relato de experiência.</p>
-        </div>
-         <div class="glass research-card">
-        <div class="research-accent"></div>
-        <div class="research-title">Fonoaudiologia na pós COVID-19</div>
-        <div class="research-meta">Trabalho · Congresso · 2021</div>
-        <p class="research-desc">Fonoaudiologia na pós COVID-19: revisão de literatura.</p>
-        </div>
 
-          <div class="glass research-card">
-        <div class="research-accent"></div>
-        <div class="research-title">Telessaúde</div>
-        <div class="research-meta">Trabalho · Congresso · 2021</div>
-        <p class="research-desc">Telessaúde em linguagem escrita: revisão integrativa da literatura.</p>
-        </div>
-
-         <div class="glass research-card">
-        <div class="research-accent"></div>
-        <div class="research-title">Design Thinking</div>
-        <div class="research-meta">Trabalho · Congresso · 2022</div>
-        <p class="research-desc">O design thinking como ensino colaborativo e criativo da linguagem escrita no curso de Fonoaudiologia: relato de experiência.</p>
-        </div>
-        
+      <!-- CARD 1 -->
       <div class="glass research-card">
         <div class="research-accent"></div>
-        <div class="research-title">Tecnologias inovadoras & Intervenção</div>
-        <div class="research-meta">Trabalho · Congresso · 2025</div>
-        <p class="research-desc">O uso de tecnologias inovadoras na intervenção fonoaudiológica em Linguagem Escrita: relato de experiência.</p>
+        <h3 class="research-title">
+          Gamificação digital & Aprendizagem
+        </h3>
+        <div class="research-meta">
+          Graduação · UFRN · 2022
+        </div>
+        <p class="research-desc">
+          Aprender Pesquisando? A gamificação como estratégia de ensino-aprendizagem no ensino superior.
+        </p>
       </div>
+
+      <!-- CARD 2 -->
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <h3 class="research-title">
+          Revisão de instrumentos
+        </h3>
+        <div class="research-meta">
+          Trabalho · Congresso · 2020
+        </div>
+        <p class="research-desc">
+          Instrumentos de triagem em consciência fonológica em escolares:
+          revisão sistemática da literatura.
+        </p>
       </div>
+
+      <!-- CARD 3 -->
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <h3 class="research-title">
+          Métodos criativos e colaborativos
+        </h3>
+        <div class="research-meta">
+          Trabalho · Encontro Monitoria · 2021
+        </div>
+        <p class="research-desc">
+          Métodos criativos e colaborativos de aprendizagem no ensino da linguagem escrita no curso de Fonoaudiologia.
+        </p>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <h3 class="research-title">
+          Fonoaudiologia na pós-COVID-19
+        </h3>
+        <div class="research-meta">
+          Trabalho · Congresso · 2021
+        </div>
+        <p class="research-desc">
+          Fonoaudiologia na pós-COVID-19:
+          revisão de literatura.
+        </p>
+      </div>
+
+      <!-- CARD 5 -->
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <h3 class="research-title">
+          Telessaúde
+        </h3>
+        <div class="research-meta">
+          Trabalho · Congresso · 2021
+        </div>
+        <p class="research-desc">
+          Telessaúde em linguagem escrita:
+          revisão integrativa da literatura.
+        </p>
+      </div>
+
+      <!-- CARD 6 -->
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <h3 class="research-title">
+          Design Thinking
+        </h3>
+        <div class="research-meta">
+          Trabalho · Congresso · 2022
+        </div>
+        <p class="research-desc">
+          O design thinking como ensino colaborativo e criativo da linguagem escrita no curso de Fonoaudiologia.
+        </p>
+      </div>
+
+      <!-- CARD 7 -->
+      <div class="glass research-card">
+        <div class="research-accent"></div>
+        <h3 class="research-title">
+          Tecnologias inovadoras & Intervenção
+        </h3>
+        <div class="research-meta">
+          Trabalho · Congresso · 2025
+        </div>
+        <p class="research-desc">
+          O uso de tecnologias inovadoras na intervenção fonoaudiológica em linguagem escrita:
+          relato de experiência.
+        </p>
+      </div>
+
     </div>
   </div>
 </section>
